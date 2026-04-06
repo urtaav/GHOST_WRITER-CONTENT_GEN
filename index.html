@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOST_WRITER // CONTENT_GEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <style type="text/tailwindcss">
+        /* IMPORTANTE: Esto habilita el modo oscuro por clase en v4 */
+      @custom-variant dark (&:where(.dark, .dark *));
+
+      @theme {
+        --color-db-pink: #FF0080;
+        --color-dark-bg: #0F172A;
+        --color-dark-card: #1E293B;
+
+        --font-mono: 'JetBrains Mono', monospace;
+        --color-scout-accent: #10b981; /* Emerald 500 */
+        --color-scout-pink: #ea4c89;
+
+      }
+      body { font-family: var(--font-mono); }
+    </style>
+    <script>
+        // Este script previene el "flash" de blanco a negro (FOUC)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <style>
+        /* Ajustes menores para scroll y apariencia de inputs range */
+        input[type=range]::-webkit-slider-thumb {
+            background: #FF0080;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            background: #FF0080;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-300 p-4 md:p-8 transition-colors duration-300">
+
+    <header
+        class="max-w-6xl mx-auto flex justify-between items-center mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+        <div class="flex items-center gap-4">
+            <div class="w-3 h-3 bg-scout-accent animate-pulse"></div>
+            <h1 class="text-xs font-bold tracking-[0.4em] text-zinc-500 uppercase">System // Ghost_Writer_v2.0</h1>
+        </div>
+        <button id="themeToggle"
+            class="px-4 py-2 border border-zinc-300 dark:border-zinc-800 text-[10px] font-bold hover:bg-zinc-200 dark:hover:bg-zinc-900 transition-colors uppercase">
+            Toggle_Visual_Mode
+        </button>
+    </header>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="border border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900/30">
+            <p class="text-[10px] text-zinc-500 mb-1 uppercase tracking-tighter">Output_Format</p>
+            <p id="displayFormat" class="text-xl font-bold text-scout-accent uppercase">TEXT_PLAIN</p>
+        </div>
+        <div class="border border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900/30">
+            <p class="text-[10px] text-zinc-500 mb-1 uppercase tracking-tighter">Active_Vocabulary</p>
+            <p id="displayStyle" class="text-xl font-bold uppercase text-zinc-900 dark:text-white">LOREM_CLASSIC</p>
+        </div>
+        <div class="border border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900/30">
+            <p class="text-[10px] text-zinc-500 mb-1 uppercase tracking-tighter">Entropy_Level</p>
+            <p class="text-xl font-bold uppercase">High_Res</p>
+        </div>
+        <div class="border border-zinc-200 dark:border-zinc-800 p-4 bg-white dark:bg-zinc-900/30">
+            <p class="text-[10px] text-zinc-500 mb-1 uppercase tracking-tighter">System_Clock</p>
+            <p id="localClock" class="text-xl font-bold">00:00:00</p>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div class="space-y-8">
+            <div class="border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-transparent">
+                <h3
+                    class="text-xs font-bold mb-6 border-b border-zinc-200 dark:border-zinc-800 pb-2 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-scout-pink"></span> PARAMETER_SYNC
+                </h3>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 mb-3 uppercase">Paragraph_Count: <span
+                                id="pCountValue" class="text-scout-accent font-bold">3</span></label>
+                        <input type="range" id="pCount" min="1" max="10" value="3"
+                            class="w-full h-1 bg-zinc-200 dark:bg-zinc-800 appearance-none cursor-pointer accent-scout-accent">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 mb-3 uppercase">Words_per_Sentence: <span
+                                id="wCountValue" class="text-scout-accent font-bold">12</span></label>
+                        <input type="range" id="wCount" min="5" max="25" value="12"
+                            class="w-full h-1 bg-zinc-200 dark:bg-zinc-800 appearance-none cursor-pointer accent-scout-accent">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 mb-2 uppercase">Core_Dictionary</label>
+                        <select id="textStyle"
+                            class="w-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 text-[10px] font-bold outline-none focus:border-scout-accent uppercase">
+                            <option value="lorem">Lorem_Ipsum</option>
+                            <option value="tech">Tech_Protocol</option>
+                            <option value="marketing">Market_Growth</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-transparent">
+                <h3 class="text-xs font-bold mb-4 uppercase">Output_Format_Selection</h3>
+                <div class="grid grid-cols-1 gap-2">
+                    <button data-format="text"
+                        class="format-btn border border-scout-accent bg-scout-accent/10 text-scout-accent py-2 text-[10px] font-bold uppercase">Text_Plain</button>
+                    <button data-format="html"
+                        class="format-btn border border-zinc-300 dark:border-zinc-800 text-zinc-500 py-2 text-[10px] font-bold uppercase hover:bg-zinc-100 dark:hover:bg-zinc-900">HTML_Source</button>
+                    <button data-format="json"
+                        class="format-btn border border-zinc-300 dark:border-zinc-800 text-zinc-500 py-2 text-[10px] font-bold uppercase hover:bg-zinc-100 dark:hover:bg-zinc-900">JSON_Payload</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2">
+            <div
+                class="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/20 p-8 relative min-h-[500px] flex flex-col">
+                <div
+                    class="absolute top-0 right-0 p-2 text-[8px] bg-zinc-100 dark:bg-zinc-800 text-zinc-500 uppercase font-bold tracking-widest">
+                    Status // Data_Stream_Active
+                </div>
+
+                <h2 class="text-zinc-500 dark:text-zinc-600 text-[10px] tracking-widest mb-6 uppercase">
+                    Generated_Payload_Preview </h2>
+
+                <div id="output"
+                    class="flex-grow text-xs md:text-sm text-zinc-800 dark:text-zinc-300 leading-relaxed font-mono whitespace-pre-wrap mb-8">
+                    // INITIALIZING_GHOST_WRITER...
+                </div>
+
+                <div class="flex border-t border-zinc-200 dark:border-zinc-800 pt-6 justify-between items-center">
+                    <div class="text-[9px] text-zinc-500 uppercase tracking-widest">
+                        Ready_for_Deployment
+                    </div>
+                    <button id="copyBtn"
+                        class="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black px-6 py-3 text-[10px] font-bold hover:bg-scout-accent dark:hover:bg-scout-accent hover:text-white transition-all uppercase">
+                        Copy_to_Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto border-t border-zinc-200 dark:border-zinc-800 py-8">
+        <p class="text-[9px] text-zinc-500 uppercase tracking-[0.3em]">
+            © 2026 GHOST_WRITER // DESIGNED_BY_URTAAV // SYSTEM_VERSION_1.0.5
+        </p>
+    </footer>
+    <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>
